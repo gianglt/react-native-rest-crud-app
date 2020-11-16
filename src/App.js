@@ -20,6 +20,7 @@ class App extends Component {
   }
 
   getData = () => {
+    React.useEffect(function(){{
     this.setState({ errorMessage: "", loading: true })
     fetch('https://jsonplaceholder.typicode.com/users', {
       method: "GET",                
@@ -33,6 +34,7 @@ class App extends Component {
         loading: false,
         errorMessage: "Network Error. Please try again."
       }))
+    })}
   }
 
   toggleAddEmployeeModal = () => {
