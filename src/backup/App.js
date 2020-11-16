@@ -21,8 +21,8 @@ class App extends Component {
 
   getData = () => {
     this.setState({ errorMessage: "", loading: true })
-    fetch('https://jsonplaceholder.typicode.com/users', {
-      method: "GET",                
+    fetch('http://dummy.restapiexample.com/api/v1/employees', {
+      method: "GET"
     })
       .then(res => res.json())
       .then(res => this.setState({
@@ -72,18 +72,17 @@ class App extends Component {
           <TouchableOpacity
             onPress={this.toggleAddEmployeeModal}
             style={styles.button}>
-            <Text style={styles.buttonText}>Add User</Text>
+            <Text style={styles.buttonText}>Add employee</Text>
           </TouchableOpacity>
 
-          <Text style={styles.title}>Users List:</Text>
+          <Text style={styles.title}>Emloyee Lists:</Text>
           {employee.map((data, index) => <View
             style={styles.employeeListContainer}
             key={data.id}>
             <Text style={{ ...styles.listItem, color: "tomato" }}>{index + 1}.</Text>
-            <Text style={styles.name}>{data.username}</Text>
-            <Text style={styles.listItem}>Name: {data.name}</Text>
-            <Text style={styles.listItem}>Email: {data.email}</Text>
-            <Text style={styles.listItem}>Company: {data.company.name}</Text>
+            <Text style={styles.name}>{data.employee_name}</Text>
+            <Text style={styles.listItem}>employee age: {data.employee_age}</Text>
+            <Text style={styles.listItem}>employee salary: {data.employee_salary}</Text>
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity

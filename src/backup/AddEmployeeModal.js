@@ -8,61 +8,48 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-class EditEmployeeModal extends Component {
+class AddEmployeeModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: "",
-            username: "",
-            email: "",
+            salary: "",
+            age: "",
             loading: false,
             errorMessage: ''
         };
-    }
-
-    componentDidMount() {
-        // state value is updated by selected employee data
-        const { name,username, email } = this.props.selectedEmployee;
-        this.setState({
-            name: name,
-            username: username,
-            email: email
-        })
     }
 
     handleChange = (value, state) => {
         this.setState({ [state]: value })
     }
 
-    updateEmployee = () => {
+    addEmployee = () => {
         // destructure state
-        const { name, username, email } = this.state;
+        const { name, age, salary } = this.state;
         this.setState({ errorMessage: "", loading: true });
 
-        if (name && username && email) {
-            // selected employee is updated with employee id
-            fetch(`https://jsonplaceholder.typicode.com/users/${this.props.selectedEmployee.id}` , {
-                method: "PUT",
+        if (name && age && salary) {
+            fetch('http://dummy.restapiexample.com/api/v1/create', {
+                method: "POST",
                 headers: {
                     "Accept": "application/json",
-                    "Content-Type": "application/json; charset=UTF-8"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    id: this.props.selectedEmployee.id,
                     name: this.state.name,
-                    username: this.state.username,
-                    email: this.state.email
+                    salary: this.state.salary,
+                    age: this.state.age
                 })
             })
                 .then(res => res.json())
-                .then((json) => console.log(json))
                 .then(res => {
                     this.props.closeModal();
-                    this.props.updateEmployee({
-                        name: res.name,
-                        username: res.username,
-                        email: res.email,
-                        id: this.props.selectedEmployee.id
+                    this.props.addEmployee({
+                        employee_name: res.name,
+                        employee_age: res.age,
+                        employee_salary: res.salary,
+                        id: res.id
                     });
                 })
                 .catch(() => {
@@ -75,7 +62,7 @@ class EditEmployeeModal extends Component {
 
     render() {
         const { isOpen, closeModal } = this.props;
-        const { name, username, email, loading, errorMessage } = this.state;
+        const { loading, errorMessage } = this.state;
         return (
             <Modal
                 visible={isOpen}
@@ -83,24 +70,23 @@ class EditEmployeeModal extends Component {
                 animationType="slide"
             >
                 <View style={styles.container}>
-                    <Text style={styles.title}>Update User Info</Text>
+                    <Text style={styles.title}>Add New Employee</Text>
 
                     <TextInput
-                        value={name}
                         style={styles.textBox}
                         onChangeText={(text) => this.handleChange(text, "name")}
                         placeholder="Full Name" />
 
                     <TextInput
-                        defaultValue={username}
+                        keyboardType="numeric"
                         style={styles.textBox}
-                        onChangeText={(text) => this.handleChange(text, "username")}
-                        placeholder="User Name" />
+                        onChangeText={(text) => this.handleChange(text, "salary")}
+                        placeholder="salary" />
                     <TextInput
-                        defaultValue={email}
+                        keyboardType="numeric"
                         style={styles.textBox}
-                        onChangeText={(text) => this.handleChange(text, "email")}
-                        placeholder="Email" />
+                        onChangeText={(text) => this.handleChange(text, "age")}
+                        placeholder="Age" />
 
                     {loading ? <Text
                         style={styles.message}>Please Wait...</Text> : errorMessage ? <Text
@@ -108,9 +94,9 @@ class EditEmployeeModal extends Component {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            onPress={this.updateEmployee}
+                            onPress={this.addEmployee}
                             style={{ ...styles.button, marginVertical: 0 }}>
-                            <Text style={styles.buttonText}>Update</Text>
+                            <Text style={styles.buttonText}>Submit</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -128,7 +114,7 @@ class EditEmployeeModal extends Component {
 
 
 
-export default EditEmployeeModal;
+export default AddEmployeeModal;
 
 const styles = StyleSheet.create({
     container: {
