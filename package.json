@@ -7,9 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "graceful-fs": "^4.1.15",
     "react": "16.8.3",
     "react-native": "0.59.8"
   },
+
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/runtime": "^7.4.5",
@@ -17,6 +19,9 @@
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.54.1",
     "react-test-renderer": "16.8.3"
+  },
+  "resolutions": {
+    "graceful-fs": "4.2.4"
   },
   "jest": {
     "preset": "react-native"
